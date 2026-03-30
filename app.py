@@ -88,6 +88,9 @@ predict_btn = st.sidebar.button("Assess Risk", type="primary", use_container_wid
 feature_names = ['age','sex','cp','trestbps','chol','fbs','restecg',
                  'thalach','exang','oldpeak','slope','ca','thal']
 
+if 'history' not in st.session_state:
+    st.session_state['history'] = pd.DataFrame()
+
 if predict_btn:
     input_scaled = scaler.transform(input_data)
 
@@ -165,3 +168,8 @@ if predict_btn:
         'Value': input_data[0]
     })
     st.dataframe(summary, use_container_width=True, hide_index=True)
+    
+    st.subheader("Prediction History")
+    st.dataframe(st.session_state['history'], use_container_width=True)
+    if st.button("Clear History"):
+        st.session_state['history'] = pd.DataFrame()
